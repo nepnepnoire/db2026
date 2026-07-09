@@ -1,0 +1,310 @@
+SQL> create table warehouse (w_id int, w_name char(10), w_street_1 char(20), w_street_2 char(20), w_city char(20), w_state char(2), w_zip char(9), w_tax float, w_ytd float);
+
+SQL> create table district (d_id int, d_w_id int, d_name char(10), d_street_1 char(20), d_street_2 char(20), d_city char(20), d_state char(2), d_zip char(9), d_tax float, d_ytd float, d_next_o_id int);
+
+SQL> create table customer (c_id int, c_d_id int, c_w_id int, c_first char(16), c_middle char(2), c_last char(16), c_street_1 char(20), c_street_2 char(20), c_city char(20), c_state char(2), c_zip char(9), c_phone char(16), c_since char(30), c_credit char(2), c_credit_lim int, c_discount float, c_balance float, c_ytd_payment float, c_payment_cnt int, c_delivery_cnt int, c_data char(50));
+
+SQL> create table history (h_c_id int, h_c_d_id int, h_c_w_id int, h_d_id int, h_w_id int, h_date char(30), h_amount float, h_data char(24));
+
+SQL> create table new_orders (no_o_id int, no_d_id int, no_w_id int);
+
+SQL> create table orders (o_id int, o_d_id int, o_w_id int, o_c_id int, o_entry_d char(30), o_carrier_id int, o_ol_cnt int, o_all_local int);
+
+SQL> create table order_line ( ol_o_id int, ol_d_id int, ol_w_id int, ol_number int, ol_i_id int, ol_supply_w_id int, ol_delivery_d char(30), ol_quantity int, ol_amount float, ol_dist_info char(24));
+
+SQL> create table item (i_id int, i_im_id int, i_name char(24), i_price float, i_data char(50));
+
+SQL> create table stock (s_i_id int, s_w_id int, s_quantity int, s_dist_01 char(24), s_dist_02 char(24), s_dist_03 char(24), s_dist_04 char(24), s_dist_05 char(24), s_dist_06 char(24), s_dist_07 char(24), s_dist_08 char(24), s_dist_09 char(24), s_dist_10 char(24), s_ytd float, s_order_cnt int, s_remote_cnt int, s_data char(50));
+
+SQL> insert into warehouse values (1, 'o1lH9muM7h', 'pOTjr4TC77zDbhkM3T3h', 'hKzqC8xgms2iSuhXiti3', 'GFBB4NhhVGS8YlReAYeG', 'cx', 'd3CMzt5vM', 0.200000, 300000.000000);
+
+SQL> insert into district values (1, 1, 'Z314FqJwwo', 'CO78ftdsEOfmkPJ4XQRP', 'qSk4WE02GvBdL2amJU2j', 'wUx6Pi5X0gbcW6Hkt9bP', 'KM', 'I7tXE3XDN', 0.180000, 300000.000000, 4);
+
+SQL> insert into district values (2, 1, '2tEplEs3cQ', 'Ez5mBiBwxF4vt40zxyZk', 'LFYLDDcjYGKKA27ZpNGm', 'GC3NgyXZlX2tNEc1f6C7', 'W7', 'zJgOHvNBw', 0.190000, 300000.000000, 4);
+
+SQL> insert into customer values (1, 1, 1, 'zAbhlEhGSjEz6iOu', 'OE', 'BARRBARRBARR', 'XjZcL0WC503da8dxiApB', 'H2oPsKATm3ANFoyPOHtY', 'SIavaQUvYw3nl1nLiwMj', 'KA', 'hjUb0NH5l', '6569307141971705', '2023-06-02 18:48:24', 'GC', 50000, 0.150000, 10.000000, 10.000000, 1, 0, 'MqzaRhXvHrcsHFbCpSa3IO3MQl34aCKtQLPoyBINllS8zVrhoT');
+
+SQL> insert into customer values (2, 1, 1, 'U4dx3sBwveP07nXX', 'OE', 'BARRBARROUGH', 'ompaKZuj0gZdNJrJeCRw', 'jI3OMhGXj3dwXI4IRtoH', '2H95bbwdkVwXD4w8zRPI', 'Qc', 'LZMTtBK3e', '0915553158021242', '2023-06-02 18:48:24', 'GC', 50000, 0.120000, 10.000000, 10.000000, 1, 0, 'TgFRvc6UJSSXHmIQjhRJ1909TjGWCOGkxUBBL09Yb05Zl3UoDc');
+
+SQL> insert into customer values (3, 1, 1, 'GDeo1SArJn6btDrH', 'OE', 'BARRBARRABLE', 'MVpILNH2m2XU4fuI9hd7', 'BRY5E4ng27uxHsoHfivJ', 'XEV9Ogs9PbMpDZMqn88x', 'fp', 'UJprhyWE8', '7302745112386862', '2023-06-02 18:48:24', 'GC', 50000, 0.470000, 10.000000, 10.000000, 1, 0, 'vb1j6tRZ0dmOdXBpzcfwKhfeAXqshQVhbTcAujdMPriJIFkGCE');
+
+SQL> insert into customer values (1, 2, 1, 'TgAnRQvtGfVYRly9', 'OE', 'BARRBARRBARR', 'go1y6NjY6AcX07KpWIfL', 'bvuXCdZjEsWejZDyTCVo', 'vSanmDFOUmVFChGPjQzk', 'fB', '7NNzvkECK', '7861255226876700', '2023-06-02 18:48:24', 'BC', 50000, 0.340000, 10.000000, 10.000000, 1, 0, '7t9esVxEYI5qg5vEGwfzt0mfdjauEX50FmwBRtirs1SpwisBVg');
+
+SQL> insert into customer values (2, 2, 1, 'WPXcZun0sAfenmoF', 'OE', 'BARRBARROUGH', 'v6rFGHXqFUqs3aKJ3wfC', 'IgW3LdYokpqDW2JivEQG', 'Xl7tk5ni51Zdv37FsDyb', 'p7', 'n5Ctsl7w0', '9365553896950101', '2023-06-02 18:48:24', 'BC', 50000, 0.360000, 10.000000, 10.000000, 1, 0, 'CgkSVV4cIz6XVVC1ugx3zbiZnw8zm7GE82np37sAFiQ9YvVht6');
+
+SQL> insert into customer values (3, 2, 1, 'L29R7U9sl30QCkuv', 'OE', 'BARRBARRABLE', '3h66lOXlAf6zVqVAFkPy', '9YarGDKNA3Z8W6s4AieY', 'tDs68Z13uo7Rb2w5DiGP', 'mF', 'SasjPXa71', '7395525780159101', '2023-06-02 18:48:24', 'BC', 50000, 0.100000, 10.000000, 10.000000, 1, 0, 'd8svnjSXhxqGny5MbmZkFOZzI5WyDIZSupLMvomSqQ2foQDXOB');
+
+SQL> insert into history values (1, 1, 1, 1, 1, '2023-06-02 18:48:24', 10.000000, 'BygRwH0XCGdznqkKINzOZVx9');
+
+SQL> insert into history values (2, 1, 1, 1, 1, '2023-06-02 18:48:24', 10.000000, 'EOZowOBQLpxM7B0o1Qtjfc37');
+
+SQL> insert into history values (3, 1, 1, 1, 1, '2023-06-02 18:48:24', 10.000000, 'mohD7DI6n2hzgDBIZSg8dbQf');
+
+SQL> insert into history values (1, 2, 1, 2, 1, '2023-06-02 18:48:24', 10.000000, '6zNxzyToFw7zQtY9dv9Pdiwu');
+
+SQL> insert into history values (2, 2, 1, 2, 1, '2023-06-02 18:48:24', 10.000000, '7QvpMmpofVEGuyNUpDSwcD0l');
+
+SQL> insert into history values (3, 2, 1, 2, 1, '2023-06-02 18:48:24', 10.000000, 'mfgY4mdvZs2goA9darqGq4wB');
+
+SQL> insert into new_orders values (2, 1, 1);
+
+SQL> insert into new_orders values (3, 1, 1);
+
+SQL> insert into new_orders values (2, 2, 1);
+
+SQL> insert into new_orders values (3, 2, 1);
+
+SQL> insert into orders values (1, 1, 1, 1, '2023-06-02 18:48:24', 1, 10, 1);
+
+SQL> insert into orders values (2, 1, 1, 2, '2023-06-02 18:48:24', 0, 10, 1);
+
+SQL> insert into orders values (3, 1, 1, 32656, '2023-06-02 18:48:24', 0, 5, 1);
+
+SQL> insert into orders values (1, 2, 1, 1, '2023-06-02 18:48:24', 6, 9, 1);
+
+SQL> insert into orders values (2, 2, 1, 3, '2023-06-02 18:48:24', 0, 5, 1);
+
+SQL> insert into orders values (3, 2, 1, 3, '2023-06-02 18:48:24', 0, 15, 1);
+
+SQL> insert into order_line values (1, 1, 1, 1, 2, 1, '2023-06-02 18:48:24', 5, 0.000000, 'hR5lfQyt45UFVIdXcFYCoJtd');
+
+SQL> insert into order_line values (1, 1, 1, 2, 2, 1, '2023-06-02 18:48:24', 5, 0.000000, '2YTnM5n20KGMhh40GmaE1Xuw');
+
+SQL> insert into order_line values (1, 1, 1, 3, 9, 1, '2023-06-02 18:48:24', 5, 0.000000, 'FnF2I1Zog7pkXJdx05eRJYoJ');
+
+SQL> insert into order_line values (1, 1, 1, 4, 6, 1, '2023-06-02 18:48:24', 5, 0.000000, 'I1OS9TI49rCrTqC8MHx0s1nk');
+
+SQL> insert into order_line values (1, 1, 1, 5, 4, 1, '2023-06-02 18:48:24', 5, 0.000000, 'T3rDkRmQgBLjK7DYRQ7fCVzK');
+
+SQL> insert into order_line values (1, 1, 1, 6, 1, 1, '2023-06-02 18:48:24', 5, 0.000000, 'aChrL5Aw6KPy4gS2Mwgs71Zc');
+
+SQL> insert into order_line values (1, 1, 1, 7, 2, 1, '2023-06-02 18:48:24', 5, 0.000000, 'hrlCx1iSjvs0F0HCNLHfK5jx');
+
+SQL> insert into order_line values (1, 1, 1, 8, 5, 1, '2023-06-02 18:48:24', 5, 0.000000, 'Kd4bSTZdPfSKMO9wkIr56ezx');
+
+SQL> insert into order_line values (1, 1, 1, 9, 10, 1, '2023-06-02 18:48:24', 5, 0.000000, '9aQUuap4OcyAhggRsfDTZ1xD');
+
+SQL> insert into order_line values (1, 1, 1, 10, 3, 1, '2023-06-02 18:48:24', 5, 0.000000, 'bNFYjm0hseL5Alazl8Chu6vS');
+
+SQL> insert into order_line values (1, 1, 1, 11, 5, 1, '2023-06-02 18:48:24', 5, 0.000000, 'cRxTgdenifOlXHT1oU5zjKUI');
+
+SQL> insert into order_line values (1, 1, 1, 12, 4, 1, '2023-06-02 18:48:24', 5, 0.000000, 'xbhJsqOk1RzNTZJsL1Cx43ff');
+
+SQL> insert into order_line values (1, 1, 1, 13, 1, 1, '2023-06-02 18:48:24', 5, 0.000000, 'cuEtQZYyNbu0cfMj62KG3ywL');
+
+SQL> insert into order_line values (2, 1, 1, 1, 6, 1, '2023-06-02 18:48:24', 5, 0.000000, '8jNclFHGKAi1k9wLYZnPAXbS');
+
+SQL> insert into order_line values (2, 1, 1, 2, 10, 1, '2023-06-02 18:48:24', 5, 0.000000, 'aAsMmN9j2J9K3dhDQe5ztF78');
+
+SQL> insert into order_line values (2, 1, 1, 3, 4, 1, '2023-06-02 18:48:24', 5, 0.000000, 'ugW45TEBO18GJsKYp6GaH7fP');
+
+SQL> insert into order_line values (2, 1, 1, 4, 4, 1, '2023-06-02 18:48:24', 5, 0.000000, 'WI7X3An6PiSZ7xMMO9KEMvSB');
+
+SQL> insert into order_line values (2, 1, 1, 5, 1, 1, '2023-06-02 18:48:24', 5, 0.000000, '2YVnQi7f098293edUx18KoK2');
+
+SQL> insert into order_line values (2, 1, 1, 6, 9, 1, '2023-06-02 18:48:24', 5, 0.000000, '0Gm8DcpZvqtoI44URewkbpxj');
+
+SQL> insert into order_line values (2, 1, 1, 7, 2, 1, '2023-06-02 18:48:24', 5, 0.000000, 'lNhzCWJ0QXto19lE2Tk1xbIl');
+
+SQL> insert into order_line values (3, 1, 1, 1, 1, 1, '2023-06-02 18:48:24', 5, 0.000000, 'RvEtwrnxOeZPLVtPMCozmU1i');
+
+SQL> insert into order_line values (3, 1, 1, 2, 2, 1, '2023-06-02 18:48:24', 5, 0.000000, 'mKAJgdYvP3lBDXyJQIpXGkXS');
+
+SQL> insert into order_line values (3, 1, 1, 3, 8, 1, '2023-06-02 18:48:24', 5, 0.000000, 'GLNqiblxxJsE9316xnMvMcWB');
+
+SQL> insert into order_line values (3, 1, 1, 4, 5, 1, '2023-06-02 18:48:24', 5, 0.000000, '3If2AZnaKfiH6IIxNQzbdtic');
+
+SQL> insert into order_line values (3, 1, 1, 5, 7, 1, '2023-06-02 18:48:24', 5, 0.000000, 'LpgPEa7z5vi0n7X6PdmoRQXQ');
+
+SQL> insert into order_line values (1, 2, 1, 1, 10, 1, '2023-06-02 18:48:24', 5, 0.000000, '2YEQD8IHd0Gb3xwuRPwU2SS4');
+
+SQL> insert into order_line values (1, 2, 1, 2, 8, 1, '2023-06-02 18:48:24', 5, 0.000000, 'qqn4qUsMnQr6StJDvKzzhGO8');
+
+SQL> insert into order_line values (1, 2, 1, 3, 6, 1, '2023-06-02 18:48:24', 5, 0.000000, '7EMvPdkRyY7f2x0FvCHsnQ13');
+
+SQL> insert into order_line values (1, 2, 1, 4, 10, 1, '2023-06-02 18:48:24', 5, 0.000000, 'dncNRppFLBMx3eIzGdPU5JYo');
+
+SQL> insert into order_line values (1, 2, 1, 5, 7, 1, '2023-06-02 18:48:24', 5, 0.000000, '9mH1FIy2fq06AGQo8uD6jmze');
+
+SQL> insert into order_line values (1, 2, 1, 6, 10, 1, '2023-06-02 18:48:24', 5, 0.000000, 'bcdYlBxH2X7dhyJOCEz6LinU');
+
+SQL> insert into order_line values (2, 2, 1, 1, 10, 1, '2023-06-02 18:48:24', 5, 0.000000, 'AiwU6eRFJblQMW5Q6fdtN5Lq');
+
+SQL> insert into order_line values (2, 2, 1, 2, 10, 1, '2023-06-02 18:48:24', 5, 0.000000, 'kVcQpsC6Otm0HRuXGWYXI8d3');
+
+SQL> insert into order_line values (2, 2, 1, 3, 4, 1, '2023-06-02 18:48:24', 5, 0.000000, 'WwSklLG1AqhWks5XTOoHiPFO');
+
+SQL> insert into order_line values (2, 2, 1, 4, 9, 1, '2023-06-02 18:48:24', 5, 0.000000, '0R3H3rp4Eq0u1uvPDs8zlTvC');
+
+SQL> insert into order_line values (2, 2, 1, 5, 5, 1, '2023-06-02 18:48:24', 5, 0.000000, '3p3eplyNV36g1eFJEAe4SMFe');
+
+SQL> insert into order_line values (2, 2, 1, 6, 4, 1, '2023-06-02 18:48:24', 5, 0.000000, 'I33YZBrxGyn3qhFHddEu3SmK');
+
+SQL> insert into order_line values (2, 2, 1, 7, 2, 1, '2023-06-02 18:48:24', 5, 0.000000, 'k5pzx3u3CHKDcqXfUUoNKaIs');
+
+SQL> insert into order_line values (2, 2, 1, 8, 9, 1, '2023-06-02 18:48:24', 5, 0.000000, 'AOPAaybTBmoTHPUBKiYMkhvJ');
+
+SQL> insert into order_line values (2, 2, 1, 9, 8, 1, '2023-06-02 18:48:24', 5, 0.000000, 'hh6IinXdle9W6ELpLh3L5Cwv');
+
+SQL> insert into order_line values (2, 2, 1, 10, 1, 1, '2023-06-02 18:48:24', 5, 0.000000, '9j6IkbxXrJ1VA0UuRKAMc1rs');
+
+SQL> insert into order_line values (2, 2, 1, 11, 1, 1, '2023-06-02 18:48:24', 5, 0.000000, 'nrrpJDAMSXQ1LrZjYxMrPJDg');
+
+SQL> insert into order_line values (2, 2, 1, 12, 4, 1, '2023-06-02 18:48:24', 5, 0.000000, 'Jt6w1WDFgHlxm8AZmDgwRqBi');
+
+SQL> insert into order_line values (3, 2, 1, 1, 7, 1, '2023-06-02 18:48:24', 5, 0.000000, 'gnQKFxw7rVwbHThr3Oo08w31');
+
+SQL> insert into order_line values (3, 2, 1, 2, 9, 1, '2023-06-02 18:48:24', 5, 0.000000, 'v0sHrH0ujPHcRclGwQlYfGT5');
+
+SQL> insert into order_line values (3, 2, 1, 3, 3, 1, '2023-06-02 18:48:24', 5, 0.000000, 'XwWRlT2txxskjRhlfKSZ841c');
+
+SQL> insert into order_line values (3, 2, 1, 4, 9, 1, '2023-06-02 18:48:24', 5, 0.000000, 'gNw9XA5ExSGJhdggn47fu9CK');
+
+SQL> insert into order_line values (3, 2, 1, 5, 1, 1, '2023-06-02 18:48:24', 5, 0.000000, 'xwuiRfr0neGJlo7cRFg4zqHO');
+
+SQL> insert into order_line values (3, 2, 1, 6, 1, 1, '2023-06-02 18:48:24', 5, 0.000000, 'gG04cfdmSc1qRFSn1IIyN8TH');
+
+SQL> insert into item values (1, 5041, 'zNXwczFNp25DVgFyJXJydt7Y', 51.560001, 'HqXgKziCbXdXg3VljU9r4BfYUqpgchZJ1WAXmVFozWWmnPmeHd');
+
+SQL> insert into item values (2, 7675, '2SxQz1xLbrrliyX51ZiPxJSe', 12.700000, 'ByyPxReST1wp7ZYvsmwUSRbVPNDo2pHcoBYdC5t96NwoKCGC0B');
+
+SQL> insert into item values (3, 7178, 'vgF19wijQI51WYKlaNFsRffJ', 56.439999, 'KA6CRCuMXklQeozCmECbdw9ifCMAxvuLwZpg3orChXGvI73n5x');
+
+SQL> insert into item values (4, 1934, 'MHjF4iKOh0NIFTYfyEspcQsB', 99.330002, 'WdwjZkGWLgBsdwovVsY7R5DvEt8Nae8NQYxU8UDwcQpYaOI5lx');
+
+SQL> insert into item values (5, 7125, 'rabYcn2YSBjOWjumZLDTF9KQ', 64.160004, 'mz53HH0GObevUiXlyUA6NLR8OysbCYVYzzbZNdpmFF8HuOCA1u');
+
+SQL> insert into item values (6, 3970, 'DkpLgg8wJeMIjk9Ea3PG3dKc', 95.730003, 'C4F783g1rccBDOMi2J9RIuQ2ihM9tR2bGMi3nOv1fN3UNVkvp8');
+
+SQL> insert into item values (7, 1027, 'vLFkIUsXd9zAFyGioM2ONoY8', 36.840000, '8QraJEdoK7Wv3VEsEHaFrs6lmMmCkBsoVzJThSAvnZXPIq7q2Y');
+
+SQL> insert into item values (8, 5313, 'SRIuZzuuw7J1TPc6HOI9YQCj', 71.500000, 'SGzBr3u09MpEItw1lSGKPgieWuKCZB5fCuHpmMMpSD1eeeQEgJ');
+
+SQL> insert into item values (9, 2028, 'm5U10OduNqpqyWfofM1FOKhw', 20.670000, 'ijFcuBM9FtC5eovstDZhHClADGYtwpa28f02qdmIvubNWSa8iQ');
+
+SQL> insert into item values (10, 3137, '08g8nFH9q7qMlOP1jGA0GvSA', 59.299999, 'SssgeiOgAwn7byIwhz8GM6dDuaNZJwGd2B8LPhiW8KBxiu8mQY');
+
+SQL> insert into stock values (1, 1, 11, 'OfXDYAbdbDyduDR5lQHhgbkF', 'AL9l2KAYouG6sBoYPpyyQ7KX', 'ytjVQh9ysQLxNkKOHRbO44bj', 'FPLAFuNcies0kRkoCtkNgMEL', '4JKSEXo2Roav3VttkJkRbfd3', 'E3r499eH7MjJWAkqsWN70JHO', 'dURvBWHTQOwMRQVZItUZ9yxb', 'GrPHQouaqdIPAp6OvD2zNOri', 'nCQ8t3Oy5fgEOhK6l0TWuyTl', 'NoELtCb5TN8eQAD4W3Q935Ak', 0.000000, 0, 0, 'rOvHRI3I70yS64Krj584fU4Tl4RpOUp4NT30K5921JvUfRWIRx');
+
+SQL> insert into stock values (2, 1, 47, 'hUcSWytg8JmZgRWlSDKViTbw', '431gWF7mRk2IlW6Bo0nmVXsX', 'OcGbfTzWRx7atFp4SOUr1AXq', 'O2yntxUKILsPyZvNgBcwy5sh', 'XrJHlFyWtX1zTTq7YHCtcNCS', 'D1PDQKyNAkhAlPOGcVCGu1Fy', 'H4ht4l09fFofbpiIZVL2X9vA', 'MrTf4FCcPH2K7gJzswFLowI3', '2FFGqnaakZ4ZlAOAT1PLhhxh', 'CJpze629GwMEEKP4Xcky6tXJ', 0.000000, 0, 0, '7oKO3CpY2nrLgY8CqAbqeRQ4QQrkAa8wmA51UroI3ud7HaQUfs');
+
+SQL> insert into stock values (3, 1, 94, 'ma8T3jOfgFF7wWAGw0gPLsJy', 'NJVVP2HwiQYm2dXsQWRTk0mv', 'xhd9IHH1NwVkjutbFyjQk8Ir', '3W0ZyYbeZnBP5uRfkO5aOfWN', 'Nt7HRzTVcmT5I7cQvfzlF1Id', '8Vv9DY7e1GZo4Nm9BBcAxAUD', 'Nj6XZd9QAEKXw0UnUBdpOqAD', 'H7ohFv1NF9GJrJZa3gFcSV1X', '1Qfzkn2cMHIWRPWDMaQkrw7t', 'SHAhyNlmgeAXFC4Af472j7Jn', 0.000000, 0, 0, 'Fwo3s7Pu4swUUW31BuptTa46swFkPPANmtTFb6MrXEZpTEfXbY');
+
+SQL> insert into stock values (4, 1, 52, 'z4unm0qdriePHDx2yQ8VMFn4', 'z1zHArDcBk6vynsWwOgqGliN', 'cJo3PQ4Nrg41RQ7OGqitsuRd', 'oRsPtQRfMuxAMDw3gQRDInZs', 'xnv9QPdeND9hxejE1oRMUUcn', 'xZMYiP4f94xwr8wvh54LMQSx', 'P3QYo6qg7vCbqRIphGfl4bMO', 'gzdQOqtNwvCkQ4diDq2Ha0GA', 'cnJKF4UfnSee3A1e16ygSqOk', 'zthbltB3eHtRyICAE03xbNxJ', 0.000000, 0, 0, '8xFjlojNluHTi61QYuQbFIai5sZinXVhSaqRCkrgnQK5dOfF7g');
+
+SQL> insert into stock values (5, 1, 69, 'ZpMpHgmzhqImsSr3JGaP7cQ1', 'kIpDDSwxJbm5iQZwwsNg54qx', '70h8Bgh5sTvt5KXmlvT93acm', 'iezKLTjPFUVeDHpVCO1JcYrw', 'yFIuO2qWe8idS1t52TmL5vrt', 'B71G4DUO1gmvpi8rn968iJ6T', 'YU0IZToCAoqOtFOUyW3X8mFx', '5EAUWAqqf03rgjbIXgnM6E5v', 'H4BLsE380jBw8NOnS0uvkvWN', 'xCz3CZ3UsWz1qilPBBokdyOx', 0.000000, 0, 0, 'XMG3i6LAGoIBjKsoSSJEdm2Zru21UmR9IY54O98SXIu3Uy9gg0');
+
+SQL> insert into stock values (6, 1, 14, 'GuKVkUQ08HnsfzqWlcNfX3lk', 'wZF6avS1Yubz2OKaJVLDEOds', 'tp73IymPhVoMPipYtECZoLWk', 'YxlylyhGZGHRlxmLQN2tdlkZ', 'cceRDzhVFhUpIIOuau5MKDEn', 'EbBnosPd1IBERMfuWeW4Z4j5', 'ssZpS5wwuf1914Ul4RCdCjU7', 'vG5OAvTJrWMlXKV9Jak6T4z8', 'bke2VqUFK6p8mdgIWViRT0uK', 'hWPUWUpHmMY54pueakf8qIlX', 0.000000, 0, 0, 'Oz7RPLptHMHA0MOjFYVPtGdijmJS8PIX6ZMeR9iIqq5Fqqab8N');
+
+SQL> insert into stock values (7, 1, 91, 'DsGaHdkKx70ZjdQir3o58rht', 'Jm82a8AlR32izzAwd6OyboG6', 'hJyiQPMyZGiF4ElKyFmIKLdK', 'AWCl53RXFW3w9z3dw0Sv0aTB', '1oPXBR4iC7bB9aK3Fet4ZYaH', 'dtwew5Z4OaI57d22yerGt0DT', '5KAkhc2l9bnSAcKRb9D39Y7w', 'PI89Kfyo0SJD5t2vqqylVXKh', 'Yy0PNIj9ASt289NrlcdAWFLh', 't42AqcFPn7atXiRyXdfoTDn4', 0.000000, 0, 0, 'aHa5B7dR8wnOdbpq6wTSXbb9ZEfftWvHXlUsvsx6VddFbbVvoz');
+
+SQL> insert into stock values (8, 1, 31, 'CyqXP4jNOCvN32jMkBCokJgu', 'TshPaUWIrx7m5QLmYl5Q0a3Z', 'hIogWcsB25nz9G4svEM7vY1R', '5tn3HR8wDW7mPRkRwZIjIDzc', 'ddgHcz7aqF3OnrrQd2mCr8og', 'AEccTuRStsFot6MWZ6wGjkJh', 'fGGKk9vaKK0QTDNyzvQ1QnLr', 'SCdYPtpRKqZ7zLdSgGZD74PO', 'HWgykE9kBLaA93gMoRrmG5w8', 'MIU2fZXr0iLt5noiCImjmXGq', 0.000000, 0, 0, 'qWnRyhipYkEi12jm3NHisAki42IC4af2VJJIFtdpsz0Zwxhfdw');
+
+SQL> insert into stock values (9, 1, 72, '1K3PzOYqZrn8NLwWvqh9EeyH', 'EXt1flyjrQBJQaMnBGlLwo2t', 'XLADUGJrU2uHzdvSgW89kCNn', 'ZoCfht9vVzVdUYllRsdO9Lgo', 'Aw6fs26E2vZKVLljPspSlZTV', 'ASjjZUh0dn06r9M5JSl9QD4I', '8RQOJ5G3pIN3HM8iL9be70Fj', 'HZoIrKoWMF2fE15wNwvkCJos', 'EttqtNsylgLQKjJpH2Pbwa1b', 'ix9QRtXurR4DeeY90bo15c01', 0.000000, 0, 0, 'YvxM2tFGAcUPJThRmE2lHnGxV20BoQZb5xFpwMEQyAPRyYQQI4');
+
+SQL> insert into stock values (10, 1, 35, 'VXHx5PPfnVTjqqqX1bvN2MDT', 'U0q8yp2r5N65Z69mOKzxHu5u', 'WXd73KwYbRFJH2jNeEHSVcYA', 'ixqdyUcbq79GGVXQG3pWBvZC', '1AdCpHXxhb57XEAGBE0GZClZ', 'eJd56TJxpITM8U9srfWykrGh', 'nVtjmVD2ZoBJf6Fx1tEIIFa3', 'iT85TDWngFTsIEeaZNEq3p1Y', 'tV6qRKrlg8zlWzKyfievs3fv', 'mWF48w1KZOlC328GajvmY8PY', 0.000000, 0, 0, 'yFkwQfIt7QDGvylc4ma97uKz3Vf2K8rYD9MYGYqYIt0BDrL7nf');
+
+SQL> begin;
+
+SQL> select c_discount, c_last, c_credit, w_tax from customer, warehouse where w_id=1 and c_w_id=w_id and c_d_id=1 and c_id=1;
++------------------+------------------+------------------+------------------+
+|       c_discount |           c_last |         c_credit |            w_tax |
++------------------+------------------+------------------+------------------+
+|         0.150000 |     BARRBARRBARR |               GC |         0.200000 |
++------------------+------------------+------------------+------------------+
+Total record(s): 1
+
+SQL> select d_next_o_id, d_tax from district where d_id=1 and d_w_id=1;
++------------------+------------------+
+|      d_next_o_id |            d_tax |
++------------------+------------------+
+|                4 |         0.180000 |
++------------------+------------------+
+Total record(s): 1
+
+SQL> update district set d_next_o_id=1 where d_id=1 and d_w_id=1;
+
+SQL> insert into orders values (1, 1, 1, 1, '2023-06-02 18:48:24', 52, 5, 1);
+
+SQL> insert into new_orders values (1, 1, 1);
+
+SQL> select i_price, i_name, i_data from item where i_id=5;
++------------------+------------------+------------------+
+|          i_price |           i_name |           i_data |
++------------------+------------------+------------------+
+|        64.160004 | rabYcn2YSBjOW... | mz53HH0GObevU... |
++------------------+------------------+------------------+
+Total record(s): 1
+
+SQL> select s_quantity, s_data, s_dist_01, s_dist_02, s_dist_03, s_dist_04, s_dist_05, s_dist_06, s_dist_07, s_dist_08, s_dist_09, s_dist_10 from stock where s_i_id=5 and s_w_id=1;
++------------------+------------------+------------------+------------------+------------------+------------------+------------------+------------------+------------------+------------------+------------------+------------------+
+|       s_quantity |           s_data |        s_dist_01 |        s_dist_02 |        s_dist_03 |        s_dist_04 |        s_dist_05 |        s_dist_06 |        s_dist_07 |        s_dist_08 |        s_dist_09 |        s_dist_10 |
++------------------+------------------+------------------+------------------+------------------+------------------+------------------+------------------+------------------+------------------+------------------+------------------+
+|               69 | XMG3i6LAGoIBj... | ZpMpHgmzhqIms... | kIpDDSwxJbm5i... | 70h8Bgh5sTvt5... | iezKLTjPFUVeD... | yFIuO2qWe8idS... | B71G4DUO1gmvp... | YU0IZToCAoqOt... | 5EAUWAqqf03rg... | H4BLsE380jBw8... | xCz3CZ3UsWz1q... |
++------------------+------------------+------------------+------------------+------------------+------------------+------------------+------------------+------------------+------------------+------------------+------------------+
+Total record(s): 1
+
+SQL> update stock set s_quantity=9 where s_i_id=5 and s_w_id=1;
+
+SQL> insert into order_line values (1, 1, 1, 1, 5, 1, '2023-06-02 18:48:24', 9, 341.680176, 'X2W8v8YqATkjkbIolWPd0G80');
+
+SQL> select i_price, i_name, i_data from item where i_id=6;
++------------------+------------------+------------------+
+|          i_price |           i_name |           i_data |
++------------------+------------------+------------------+
+|        95.730003 | DkpLgg8wJeMIj... | C4F783g1rccBD... |
++------------------+------------------+------------------+
+Total record(s): 1
+
+SQL> select s_quantity, s_data, s_dist_01, s_dist_02, s_dist_03, s_dist_04, s_dist_05, s_dist_06, s_dist_07, s_dist_08, s_dist_09, s_dist_10 from stock where s_i_id=6 and s_w_id=1;
++------------------+------------------+------------------+------------------+------------------+------------------+------------------+------------------+------------------+------------------+------------------+------------------+
+|       s_quantity |           s_data |        s_dist_01 |        s_dist_02 |        s_dist_03 |        s_dist_04 |        s_dist_05 |        s_dist_06 |        s_dist_07 |        s_dist_08 |        s_dist_09 |        s_dist_10 |
++------------------+------------------+------------------+------------------+------------------+------------------+------------------+------------------+------------------+------------------+------------------+------------------+
+|               14 | Oz7RPLptHMHA0... | GuKVkUQ08Hnsf... | wZF6avS1Yubz2... | tp73IymPhVoMP... | YxlylyhGZGHRl... | cceRDzhVFhUpI... | EbBnosPd1IBER... | ssZpS5wwuf191... | vG5OAvTJrWMlX... | bke2VqUFK6p8m... | hWPUWUpHmMY54... |
++------------------+------------------+------------------+------------------+------------------+------------------+------------------+------------------+------------------+------------------+------------------+------------------+
+Total record(s): 1
+
+SQL> update stock set s_quantity=4 where s_i_id=6 and s_w_id=1;
+
+SQL> insert into order_line values (1, 1, 1, 2, 6, 1, '2023-06-02 18:48:24', 4, 389.390808, 'Wjo2Ro5l7ke9mtriRjKenuoC');
+
+SQL> select i_price, i_name, i_data from item where i_id=10;
++------------------+------------------+------------------+
+|          i_price |           i_name |           i_data |
++------------------+------------------+------------------+
+|        59.299999 | 08g8nFH9q7qMl... | SssgeiOgAwn7b... |
++------------------+------------------+------------------+
+Total record(s): 1
+
+SQL> select s_quantity, s_data, s_dist_01, s_dist_02, s_dist_03, s_dist_04, s_dist_05, s_dist_06, s_dist_07, s_dist_08, s_dist_09, s_dist_10 from stock where s_i_id=10 and s_w_id=1;
++------------------+------------------+------------------+------------------+------------------+------------------+------------------+------------------+------------------+------------------+------------------+------------------+
+|       s_quantity |           s_data |        s_dist_01 |        s_dist_02 |        s_dist_03 |        s_dist_04 |        s_dist_05 |        s_dist_06 |        s_dist_07 |        s_dist_08 |        s_dist_09 |        s_dist_10 |
++------------------+------------------+------------------+------------------+------------------+------------------+------------------+------------------+------------------+------------------+------------------+------------------+
+|               35 | yFkwQfIt7QDGv... | VXHx5PPfnVTjq... | U0q8yp2r5N65Z... | WXd73KwYbRFJH... | ixqdyUcbq79GG... | 1AdCpHXxhb57X... | eJd56TJxpITM8... | nVtjmVD2ZoBJf... | iT85TDWngFTsI... | tV6qRKrlg8zlW... | mWF48w1KZOlC3... |
++------------------+------------------+------------------+------------------+------------------+------------------+------------------+------------------+------------------+------------------+------------------+------------------+
+Total record(s): 1
+
+SQL> update stock set s_quantity=1 where s_i_id=10 and s_w_id=1;
+
+SQL> insert into order_line values (1, 1, 1, 3, 10, 1, '2023-06-02 18:48:24', 1, 230.617264, 'v09tBneu9z77didYX605ZgDP');
+
+SQL> select i_price, i_name, i_data from item where i_id=4;
++------------------+------------------+------------------+
+|          i_price |           i_name |           i_data |
++------------------+------------------+------------------+
+|        99.330002 | MHjF4iKOh0NIF... | WdwjZkGWLgBsd... |
++------------------+------------------+------------------+
+Total record(s): 1
+
+SQL> select s_quantity, s_data, s_dist_01, s_dist_02, s_dist_03, s_dist_04, s_dist_05, s_dist_06, s_dist_07, s_dist_08, s_dist_09, s_dist_10 from stock where s_i_id=4 and s_w_id=1;
++------------------+------------------+------------------+------------------+------------------+------------------+------------------+------------------+------------------+------------------+------------------+------------------+
+|       s_quantity |           s_data |        s_dist_01 |        s_dist_02 |        s_dist_03 |        s_dist_04 |        s_dist_05 |        s_dist_06 |        s_dist_07 |        s_dist_08 |        s_dist_09 |        s_dist_10 |
++------------------+------------------+------------------+------------------+------------------+------------------+------------------+------------------+------------------+------------------+------------------+------------------+
+|               52 | 8xFjlojNluHTi... | z4unm0qdriePH... | z1zHArDcBk6vy... | cJo3PQ4Nrg41R... | oRsPtQRfMuxAM... | xnv9QPdeND9hx... | xZMYiP4f94xwr... | P3QYo6qg7vCbq... | gzdQOqtNwvCkQ... | cnJKF4UfnSee3... | zthbltB3eHtRy... |
++------------------+------------------+------------------+------------------+------------------+------------------+------------------+------------------+------------------+------------------+------------------+------------------+
+Total record(s): 1
+
+SQL> update stock set s_quantity=10 where s_i_id=4 and s_w_id=1;
+
+SQL> insert into order_line values (1, 1, 1, 4, 4, 1, '2023-06-02 18:48:24', 10, 684.190125, 'oPrwOePLAMPkspGZnok4cXor');
+
